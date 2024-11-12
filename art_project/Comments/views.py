@@ -9,6 +9,9 @@ from rest_framework.decorators import action, api_view
 from .models import Comments
 from .serializer import CommentSerializer
 
+class CommentsViewSet(viewsets.ModelViewSet):
+    queryset = Comments.objects.all()
+    serializer_class = CommentSerializer
 
 @api_view(['GET'])
 def getComments(request):
