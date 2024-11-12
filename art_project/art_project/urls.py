@@ -17,8 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from Comments import urls as comments_urls
 urlpatterns = [
     path('user/', include('User.urls',)),
     path('user-post/', include('User_post.urls')),
+    path('comments/', include(comments_urls)),
     path('admin/', admin.site.urls),
 ]
