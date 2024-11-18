@@ -4,9 +4,11 @@ from .views import *
 
 router = routers.DefaultRouter()
 
-router.register(r'Users', UserViewSet)
+router.register(r'users', UserViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    # path('createUser', UserViewSet.create_user, name='Create User'),
+    # path('deleteUser', UserViewSet.delete_user, name='Delete User'),
     path('api-auth/', include('rest_framework.urls')),
 ]
