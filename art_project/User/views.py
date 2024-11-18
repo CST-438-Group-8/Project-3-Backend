@@ -9,21 +9,28 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    @api_view(['POST'])
-    def create_user(request):
-        user_data = request.data
-        user = User(**user_data)
+    @action(detail=False, methods=['POST'], url_path='createUser')
+    def create_user(self, request):
+        user_data = request.data or request.query_params
+        # user = User(**user_data)
 
         try:
+            user = User(
+                username=user_data.get('username'),
+                password=user_data.get('password'),
+                email=user_data.get('email')
+            )
+
             user.save()
             user_serialized = UserSerializer(user).data
             return Response({'Success' : user_serialized})
         except Exception as e:
             return Response({'Error' : f'{e}'}, status=status.HTTP_400_BAD_REQUEST)
         
-    @api_view(['DELETE'])
-    def delete_user(request):
-        user_data = request.data 
+    # @api_view(['DELETE'])
+    @action(detail=False, methods=['DELETE'], url_path='deleteUser')
+    def delete_user(self, request):
+        user_data = request.data or request.query_params
 
         try:
             user = User.objects.get(username=user_data['username'])
