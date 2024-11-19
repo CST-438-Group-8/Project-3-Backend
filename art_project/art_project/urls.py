@@ -18,7 +18,25 @@ from django.contrib import admin
 from django.urls import include, path
 
 from Comments import urls as comments_urls
+
+
+
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="ArtProject Endpoints",
+        default_version='v1',
+
+    ),
+    public=True,
+)
+
+
+
 urlpatterns = [
+    path('',schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('user/', include('User.urls',)),
     path('user-post/', include('User_post.urls')),
     path('comments/', include(comments_urls)),
