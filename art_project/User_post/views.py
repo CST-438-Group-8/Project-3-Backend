@@ -26,7 +26,7 @@ class UserPostViewSet(viewsets.ModelViewSet):
 
             post.save()
             post_serialized = UserPostSerializer(post).data
-            return Response({'Success' : post_serialized})
+            return Response({'Success' : 'Post created successfully', 'Post' : post_serialized}, status=status.HTTP_201_CREATED)
         except User.DoesNotExist:
             return Response({'Error' : 'User does not exist'})
         except Exception as e:
@@ -61,7 +61,7 @@ class UserPostViewSet(viewsets.ModelViewSet):
             post.save()
             post_serialized = UserPostSerializer(post).data
         
-            return Response({'Success': 'Post updated successfully', 'Post': post_serialized}, status=status.HTTP_200_OK)
+            return Response({'Success': 'Post updated successfully', 'Post': post_serialized}, status=status.HTTP_202_ACCEPTED)
         else:
             return Response({'Error': 'Caption not provided'}, status=status.HTTP_400_BAD_REQUEST)
 
