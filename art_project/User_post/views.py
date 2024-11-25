@@ -1,9 +1,11 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action, api_view
 from .models import User_Post, User
 from .serializer import UserPostSerializer
+import requests
 
 class UserPostViewSet(viewsets.ModelViewSet):
     queryset = User_Post.objects.all()
@@ -78,3 +80,17 @@ class UserPostViewSet(viewsets.ModelViewSet):
             return Response({'Error' : 'User not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'Error' : f'{e}'}, status=status.HTTP_400_BAD_REQUEST)
+        
+    @action(detail=False, methods=['POST'], url_path='upload')
+    def upload(self, request):
+        if request.method == 'POST':
+            image = request.FILES.get('image')
+            headers = {
+                'Authorization' : f'Client-ID 605c5fbddfa749e'
+            }
+            url = 'https://api.imgur.com/3/image'
+            response = requests.post(url, headers=headers, files={"image": image})
+
+            if response.status_code == 200:
+                return JsonResponse(response.json())
+            return JsonResponse({'error' : response.json()}, status=response.status_code)
