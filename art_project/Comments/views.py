@@ -24,6 +24,20 @@ def getComments(request):
     comments_data = CommentSerializer(Comments, many=True)
     return Response(comments_data.data)
 
+
+
+@api_view(['GET'])
+def getUserComments(request):
+    post_id = request.GET.get('post_id')
+    comments = Comments.objects.filter(category__icontains = post_id)
+
+    if not post_id:
+        return Response({"error": "post_id required"}, status=status.HTTP_404_NOT_FOUND)
+    print(comments)
+
+    comments_data = CommentSerializer(comments, many = True)
+    return Response(comments_data.data)
+
 # @api_view(['POST'])
 # def addComment(request):
 #     comment_data = request.data
