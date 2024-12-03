@@ -28,8 +28,8 @@ def getComments(request):
 
 @api_view(['GET'])
 def getUserComments(request):
-    post_id = request.GET.get('post_id')
-    comments = Comments.objects.filter(category__icontains = post_id)
+    post_idd = request.GET.get('post_id')
+    comments = Comments.objects.filter(post_id = post_idd)
 
     if not post_id:
         return Response({"error": "post_id required"}, status=status.HTTP_404_NOT_FOUND)
